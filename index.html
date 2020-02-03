@@ -50,100 +50,100 @@
   <script>
   document.addEventListener('DOMContentLoaded',async function(){
 
-let url= 'https://randomuser.me/api/?results=100';
+	let url= 'https://randomuser.me/api/?results=100';
 
-let data = await fetch(url);
-data     = await data.json();
-data     = data.results;
+	let data = await fetch(url);
+	data     = await data.json();
+	data     = data.results;
 
-data	 = data.map(person => ({
+	data	 = data.map(person => ({
 
-    name : person.name.first,
-  country: person.location.country,
-   phone : person.phone,
-  visible: true
-
-
-}));
-
-console.log(data);
-
-function draw(){
-let html = data.filter(person => person.visible).map(person =>`
-<div class="row border-bottom pb-2 mt-2">
-
-    <div class="col-3">${person.name}</div>
-    <div class="col-3">${person.phone}</div>
-    <div class="col-3">${person.country}</div>
-
-</div>
-`).join('');
-let cardsTag=document.querySelector('.cards');
-cardsTag.innerHTML = html;
-}
-
-draw();
-//Imagee
-let imageSort = document.querySelector('i');
-
-function i_classEvent(){
-            let dontNeedThis = document.querySelector('.cards');
-            while (dontNeedThis.firstChild) {
-            dontNeedThis.removeChild(dontNeedThis.firstChild);
-            };
-          imageSort.classList.toggle('text-gray');
-          imageSort.classList.toggle('text-black');
-          imageSort.classList.toggle('fa-sort-amount-up-alt');
-          imageSort.classList.toggle('fa-sort-amount-down-alt');
-
-        data.sort(function (a,b){
-            if (a.name > b.name) {
-              return 1;
-            }
-            if (a.name < b.name) {
-              return -1;
-            }else{
-              return 0;
-            }
-
-        });
-        if (imageSort.classList.contains('fa-sort-amount-down-alt')){
-          data.reverse();
-        }
-        draw();
-    }
-
-imageSort.addEventListener('click', i_classEvent);
-
-//Imagee
-
-search.addEventListener('input', function(e){
-
-    let find = search.value.toLowerCase().trim();
-
-    data.forEach(person => {
-      person.visible =
-        person.name.toLowerCase().trim().includes(find)
-        || person.phone.toLowerCase().trim().includes(find)
-        || person.country.toLowerCase().trim().includes(find);
+	    name : person.name.first,
+	  country: person.location.country,
+	   phone : person.phone,
+	  visible: true
 
 
-    });
-    data.sort(function (a,b){
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }else{
-          return 0;
-        }
+	}));
 
-    });
-    if (imageSort.classList.contains('fa-sort-amount-down-alt')){
-      data.reverse();
-    }
-    draw();
+	console.log(data);
+
+	function draw(){
+		let html = data.filter(person => person.visible).map(person =>`
+		<div class="row border-bottom pb-2 mt-2">
+
+		    <div class="col-3">${person.name}</div>
+		    <div class="col-3">${person.phone}</div>
+		    <div class="col-3">${person.country}</div>
+
+		</div>
+		`).join('');
+		let cardsTag=document.querySelector('.cards');
+		cardsTag.innerHTML = html;
+	}
+
+	draw();
+	//Imagee
+	let imageSort = document.querySelector('i');
+
+	function i_classEvent(){
+		    let dontNeedThis = document.querySelector('.cards');
+		    while (dontNeedThis.firstChild) {
+		    dontNeedThis.removeChild(dontNeedThis.firstChild);
+		    };
+		  imageSort.classList.toggle('text-gray');
+		  imageSort.classList.toggle('text-black');
+		  imageSort.classList.toggle('fa-sort-amount-up-alt');
+		  imageSort.classList.toggle('fa-sort-amount-down-alt');
+
+		data.sort(function (a,b){
+		    if (a.name > b.name) {
+		      return 1;
+		    }
+		    if (a.name < b.name) {
+		      return -1;
+		    }else{
+		      return 0;
+		    }
+
+		});
+		if (imageSort.classList.contains('fa-sort-amount-down-alt')){
+		  data.reverse();
+		}
+		draw();
+	    }
+
+	imageSort.addEventListener('click', i_classEvent);
+
+	//Imagee
+
+	search.addEventListener('input', function(e){
+
+	    let find = search.value.toLowerCase().trim();
+
+	    data.forEach(person => {
+	      person.visible =
+		person.name.toLowerCase().trim().includes(find)
+		|| person.phone.toLowerCase().trim().includes(find)
+		|| person.country.toLowerCase().trim().includes(find);
+
+
+	    });
+	    data.sort(function (a,b){
+		if (a.name > b.name) {
+		  return 1;
+		}
+		if (a.name < b.name) {
+		  return -1;
+		}else{
+		  return 0;
+		}
+
+	    });
+	    if (imageSort.classList.contains('fa-sort-amount-down-alt')){
+	      data.reverse();
+	    }
+	    draw();
 });
 
 });
