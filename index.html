@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello DOM & Events</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+
+	<style>
+
+		.text-gray {
+			color: #bababa;
+		}
+
+	</style>
+
+  </head>
+  <body>
+
+	<div class="container mt-5 mb-5">
+		<h1>Адресная книга</h1>
+		<div class="row">
+		  <div class="col-md-6">
+			<div class="form-group">
+			  <label>Поиск</label>
+			  <input type="text" class="form-control" id="search" placeholder="Поиск...">
+			</div>
+		  </div>
+		</div>
+		<div class="row border-bottom pb-2 mt-4">
+			<div class="col-3">
+				<strong>Имя</strong>
+				<i class="fas fa-2x fa-sort-amount-up-alt text-gray"></i>
+			</div>
+			<div class="col-3"><strong>Телефон</strong></div>
+			<div class="col-3"><strong>Адрес</strong></div>
+		</div>
+
+		<div class="cards">
+
+			<!-- One Card -->
+			
+			<!-- /One Card -->
+
+		</div>
+
+	</div>
+  <script>
+  document.addEventListener('DOMContentLoaded',async function(){
+
+let url= 'https://randomuser.me/api/?results=100';
+
+let data = await fetch(url);
+data     = await data.json();
+data     = data.results;
+
+data	 = data.map(person => ({
+
+    name : person.name.first,
+  country: person.location.country,
+   phone : person.phone,
+  visible: true
+
+
+}));
+
+console.log(data);
+
+function draw(){
+let html = data.filter(person => person.visible).map(person =>`
+<div class="row border-bottom pb-2 mt-2">
+
+    <div class="col-3">${person.name}</div>
+    <div class="col-3">${person.phone}</div>
+    <div class="col-3">${person.country}</div>
+
+</div>
+`).join('');
+let cardsTag=document.querySelector('.cards');
+cardsTag.innerHTML = html;
+}
+
+draw();
+//Imagee
+let imageSort = document.querySelector('i');
+
+function i_classEvent(){
+            let dontNeedThis = document.querySelector('.cards');
+            while (dontNeedThis.firstChild) {
+            dontNeedThis.removeChild(dontNeedThis.firstChild);
+            };
+          imageSort.classList.toggle('text-gray');
+          imageSort.classList.toggle('text-black');
+          imageSort.classList.toggle('fa-sort-amount-up-alt');
+          imageSort.classList.toggle('fa-sort-amount-down-alt');
+
+        data.sort(function (a,b){
+            if (a.name > b.name) {
+              return 1;
+            }
+            if (a.name < b.name) {
+              return -1;
+            }else{
+              return 0;
+            }
+
+        });
+        if (imageSort.classList.contains('fa-sort-amount-down-alt')){
+          data.reverse();
+        }
+        draw();
+    }
+
+imageSort.addEventListener('click', i_classEvent);
+
+//Imagee
+
+search.addEventListener('input', function(e){
+
+    let find = search.value.toLowerCase().trim();
+
+    data.forEach(person => {
+      person.visible =
+        person.name.toLowerCase().trim().includes(find)
+        || person.phone.toLowerCase().trim().includes(find)
+        || person.country.toLowerCase().trim().includes(find);
+
+
+    });
+    data.sort(function (a,b){
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }else{
+          return 0;
+        }
+
+    });
+    if (imageSort.classList.contains('fa-sort-amount-down-alt')){
+      data.reverse();
+    }
+    draw();
+});
+
+});
+  </script>
+
+
+  </body>
+</html>
